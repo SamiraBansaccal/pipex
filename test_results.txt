@@ -1,0 +1,108 @@
+=== Test 1 ===
+Shell:
+bash: non_exist_input: No such file or directory
+       0       0       0
+Pipex:
+Infile: No such file or directory
+       0       0       0
+
+=== Test 2 ===
+Shell:
+bash: catds: command not found
+Makefile
+exist_input
+includes
+out1
+pipex
+src
+test_results.txt
+tester
+tester.sh
+Pipex:
+pipex: catds: command not found
+Makefile
+exist_input
+includes
+out1
+out2
+pipex
+src
+test_results.txt
+tester
+tester.sh
+
+=== Test 3 ===
+Shell:
+bash: non_exist_input: No such file or directory
+       0       0       0
+Pipex:
+Infile: No such file or directory
+       0       0       0
+
+=== Test 4 ===
+Shell:
+bash: csdfat: command not found
+bash: wsdfc: command not found
+Pipex:
+pipex: csdfat: command not found
+pipex: wsdfc: command not found
+
+=== Test 5 ===
+Shell:
+bash: non_exist_input: No such file or directory
+bash: wcss: command not found
+Pipex:
+Infile: No such file or directory
+pipex: wcss: command not found
+
+=== Test 6 ===
+Shell:
+bash: non_exist_input: No such file or directory
+Pipex:
+Infile: No such file or directory
+
+=== Test 7 ===
+Shell:
+bash: /bin/caqwdt: No such file or directory
+bash: /bin/lsqwd: No such file or directory
+Pipex:
+/bin/caqwdt: No such file or directory
+/bin/lsqwd: No such file or directory
+
+=== Test 8 ===
+Shell:
+bash: /srcs/a.out: No such file or directory
+Makefile
+exist_input
+includes
+out1
+out2
+out3
+out4
+out5
+out6
+out7
+pipex
+src
+test_results.txt
+tester
+tester.sh
+Pipex:
+/srcs/a.out: No such file or directory
+Makefile
+exist_input
+includes
+out1
+out2
+out3
+out4
+out5
+out6
+out7
+out8
+pipex
+src
+test_results.txt
+tester
+tester.sh
+
