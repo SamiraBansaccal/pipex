@@ -6,7 +6,7 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 22:05:58 by sabansac          #+#    #+#             */
-/*   Updated: 2024/08/08 22:50:29 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/15 09:07:24 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,14 @@ char	*find_cmd_path(char *cmd, char **envp)
 	char	**paths;
 	char	*cmd_path;
 
+	if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
 	if (*cmd == '/' || *cmd == '.')
 	{
 		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
-		else
-		{
-			perror(cmd);
-			return (NULL);
-		}
+		perror(cmd);
+		return (NULL);
 	}
 	paths = NULL;
 	cmd_path = NULL;
@@ -105,13 +104,13 @@ void	fork_error(void)
 	exit(EXIT_FAILURE);
 }
 
-void	first_child_process(int *pipe_ends, int *fd_infile_outfile, char *cmd1, char **envp)
+void	first_child_process(int *pipe_ends, int *fd_in_out, char *cmd1, char **envp)
 {
 	int		fd_infile;
 	int		fd_outfile;
 
-	fd_infile = fd_infile_outfile[0];
-	fd_outfile = fd_infile_outfile[1];
+	fd_infile = fd_in_out[0];
+	fd_outfile = fd_in_out[1];
 	close(fd_outfile);
 	close(pipe_ends[0]);
 	dup2(fd_infile, STDIN_FILENO);
@@ -122,13 +121,13 @@ void	first_child_process(int *pipe_ends, int *fd_infile_outfile, char *cmd1, cha
 	exit(EXIT_FAILURE);
 }
 
-void	last_child_process(int *pipe_ends, int *fd_infile_outfile, char *cmd2, char **envp)
+void	last_child_process(int *pipe_ends, int *fd_in_out, char *cmd2, char **envp)
 {
 	int		fd_infile;
 	int		fd_outfile;
 
-	fd_infile = fd_infile_outfile[0];
-	fd_outfile = fd_infile_outfile[1];
+	fd_infile = fd_in_out[0];
+	fd_outfile = fd_in_out[1];
 	close(fd_infile);
 	close(pipe_ends[1]);
 	dup2(pipe_ends[0], STDIN_FILENO);

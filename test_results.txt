@@ -1,108 +1,147 @@
-=== Test 1 ===
-Shell:
-bash: non_exist_input: No such file or directory
-       0       0       0
-Pipex:
-Infile: No such file or directory
-       0       0       0
-
-=== Test 2 ===
-Shell:
-bash: catds: command not found
-Makefile
-exist_input
-includes
-out1
-pipex
-src
-test_results.txt
-tester
-tester.sh
-Pipex:
-pipex: catds: command not found
-Makefile
-exist_input
-includes
-out1
-out2
-pipex
-src
-test_results.txt
-tester
-tester.sh
-
-=== Test 3 ===
-Shell:
-bash: non_exist_input: No such file or directory
-       0       0       0
-Pipex:
-Infile: No such file or directory
-       0       0       0
-
-=== Test 4 ===
-Shell:
-bash: csdfat: command not found
-bash: wsdfc: command not found
-Pipex:
-pipex: csdfat: command not found
-pipex: wsdfc: command not found
-
-=== Test 5 ===
-Shell:
-bash: non_exist_input: No such file or directory
-bash: wcss: command not found
-Pipex:
-Infile: No such file or directory
-pipex: wcss: command not found
-
-=== Test 6 ===
-Shell:
-bash: non_exist_input: No such file or directory
-Pipex:
+[0;31m=== Test 1: non_exist_input cat /dev/random head -n 5 ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+Pipex error:
 Infile: No such file or directory
 
-=== Test 7 ===
-Shell:
-bash: /bin/caqwdt: No such file or directory
-bash: /bin/lsqwd: No such file or directory
-Pipex:
-/bin/caqwdt: No such file or directory
-/bin/lsqwd: No such file or directory
+[0;32m=== Test 2: exist_input grep test wc -w ===[0m
+Shell output:
+       2
+Shell error:
+Pipex output:
+       2
+Pipex error:
 
-=== Test 8 ===
-Shell:
-bash: /srcs/a.out: No such file or directory
-Makefile
-exist_input
-includes
-out1
-out2
-out3
-out4
-out5
-out6
-out7
-pipex
-src
-test_results.txt
-tester
-tester.sh
-Pipex:
-/srcs/a.out: No such file or directory
-Makefile
-exist_input
-includes
-out1
-out2
-out3
-out4
-out5
-out6
-out7
-out8
-pipex
-src
-test_results.txt
-tester
-tester.sh
+[0;31m=== Test 3: exist_input ls -l wc -l ===[0m
+Shell output:
+      17
+Shell error:
+Pipex output:
+      19
+Pipex error:
+
+[0;31m=== Test 4: non_exist_input ls wc -l ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+       0
+Pipex error:
+Infile: No such file or directory
+
+[0;32m=== Test 5: exist_input cat grep a ===[0m
+Shell output:
+Shell error:
+Pipex output:
+Pipex error:
+
+[0;32m=== Test 6: exist_input cat wc -l ===[0m
+Shell output:
+       1
+Shell error:
+Pipex output:
+       1
+Pipex error:
+
+[0;31m=== Test 7: non_exist_input ls wc ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+       0       0       0
+Pipex error:
+Infile: No such file or directory
+
+[0;32m=== Test 8: exist_input /bin/cat wc -c ===[0m
+Shell output:
+      13
+Shell error:
+Pipex output:
+      13
+Pipex error:
+
+[0;31m=== Test 9: non_exist_input cat /dev/random head -n 5 ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+Pipex error:
+Infile: No such file or directory
+cat: No such file or directory
+head: No such file or directory
+
+[0;31m=== Test 10: exist_input cat grep test ===[0m
+Shell output:
+test content
+Shell error:
+Pipex output:
+Pipex error:
+cat: No such file or directory
+grep: No such file or directory
+
+[0;31m=== Test 11: non_exist_input cat /dev/random wc ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+Pipex error:
+Infile: No such file or directory
+cat: No such file or directory
+wc: No such file or directory
+
+[0;31m=== Test 12: exist_input cat wc -cl ===[0m
+Shell output:
+       1      13
+Shell error:
+Pipex output:
+Pipex error:
+cat: No such file or directory
+wc: No such file or directory
+
+[0;31m=== Test 13: non_exist_input ls grep a ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+Pipex error:
+Infile: No such file or directory
+ls: No such file or directory
+grep: No such file or directory
+
+[0;31m=== Test 14: exist_input cat wc -l ===[0m
+Shell output:
+       1
+Shell error:
+Pipex output:
+Pipex error:
+cat: No such file or directory
+wc: No such file or directory
+
+[0;31m=== Test 15: non_exist_input ls wc ===[0m
+Shell output:
+Input file not found
+Shell error:
+Input file not found
+Pipex output:
+Pipex error:
+Infile: No such file or directory
+ls: No such file or directory
+wc: No such file or directory
+
+[0;31m=== Test 16: exist_input /bin/cat grep test ===[0m
+Shell output:
+test content
+Shell error:
+Pipex output:
+Pipex error:
+cat: stdout: Bad file descriptor
+grep: No such file or directory
 

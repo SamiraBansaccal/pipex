@@ -6,7 +6,7 @@
 /*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:26:26 by sabansac          #+#    #+#             */
-/*   Updated: 2023/12/28 08:49:02 by sbansacc         ###   ########.fr       */
+/*   Updated: 2024/08/13 22:41:03 by sbansacc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define LIBFT_H
 # include <unistd.h>
 # include <stdlib.h>
+# include "get_next_line.h"
+
 /* ***************** Partie 1 ***************** */
 
 int			ft_isalpha(int c);
