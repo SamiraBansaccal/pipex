@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    error_handling_b.sh                                :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ael-bekk <ael-bekk <ael-bekk@student.13    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/02/17 11:22:13 by ael-bekk          #+#    #+#              #
-#    Updated: 2022/02/17 17:18:10 by ael-bekk         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #!/bin/bash
 
 l1="======================================================================================="
@@ -113,6 +101,10 @@ if [ "$status" = "finished" ] && [ "$find_smae_err" -eq "1" ]
 else
     printf "${RED}[KO]${RESET}\n"
 fi
+echo "${YELLOW}Shell output:${RESET}"
+< in_fsdile cat /dev/random | head -n 5 2>&1
+echo "${BLUE}Pipex output:${RESET}"
+cat my_error
 sleep 0.7
 
 
@@ -128,6 +120,11 @@ sleep 0.7
 	else
 		printf "${RED}[KO]${RESET}\n"
 	fi
+	echo "${YELLOW}Shell output:${RESET}"
+	< in_file catds /dev/random | ls | wc -l 2>&1
+	echo "${BLUE}Pipex output:${RESET}"
+	cat my_error
+	cat outfile
 	sleep 0.7
 
 
@@ -145,6 +142,11 @@ sleep 0.7
 	else
 	    printf "${RED}[KO]${RESET}\n"
 	fi
+	echo "${YELLOW}Shell output:${RESET}"
+	< sdfin_file cat /dev/random | wc | ls 2>&1
+	echo "${BLUE}Pipex output:${RESET}"
+	cat my_error
+	cat outfile
 	sleep 0.7
 
 	printf "${PURPLE}==============>Test 4${RESET}"
@@ -161,6 +163,11 @@ sleep 0.7
 	else
 	    printf "${RED}[KO]${RESET}\n"
 	fi
+	echo "${YELLOW}Shell output:${RESET}"
+	< in_file cewfat | wc -cl | wwefc | grep 0 | so/rt | cat 2>&1
+	echo "${BLUE}Pipex output:${RESET}"
+	cat my_error
+	cat outfile
 	sleep 0.7
 
 
@@ -175,4 +182,8 @@ sleep 0.7
 	else
 	    printf "${RED}[KO]${RESET}\n"
 	fi
+	echo "${YELLOW}Shell output:${RESET}"
+	< in_fiasfle sleep 12 | sleep | sleep 7 | sleep 8 | sleep 4 | sleep 5 | sleep 2 2>&1
+	echo "${BLUE}Pipex output:${RESET}"
+	cat my_error
 	sleep 0.7

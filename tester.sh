@@ -1,80 +1,87 @@
 #!/bin/bash
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+l1="======================================================================================="
+l2="---------------------------------------------------------------------------------------\n"
+GREEN="\033[38;2;57;181;74m"
+RED="\033[38;2;222;56;43m"
+BLUE="\033[38;2;34;183;235m"
+YELLOW="\033[38;2;255;176;0m"
+PURPLE="\033[38;2;255;105;180m"
+WHITE="\033[1;37m"
+RESET="\033[0m"
+
+printf "\n\n\n\n${GREEN}test error handling on multi pipe:${RESET}"
+printf "$RED$l2$RESET"
+
+make fclean
+printf "${YELLOW}[make] :${RESET} your pipex: ${PURPLE}Bonus${RESET}\n"
+make bonus
+printf "$RED$l2$RESET"
+
+if ! [ -f "./pipex" ]; then
+    printf "${YELLOW}Error :${RESET} No such file or directory: ${PURPLE}pipex${RESET}\n" >&2
+    exit
+fi
+
+echo "Test content for input file" > in_file
 
 run_test() {
-    local test_num=$1
-    local input_file=$2
-    local cmd1=$3
-    local cmd2=$4
+    test_name=$1
+    shell_command=$2
+    shift 2
+    pipex_args=$@
+
+    printf "${PURPLE}==============>$test_name${RESET}\n"
+    printf "${WHITE}Shell command: $shell_command${RESET}\n"
+    printf "${WHITE}Pipex command: ./pipex $pipex_args${RESET}\n"
+
+    echo -e "${YELLOW}Shell output:${RESET}"
+    eval "$shell_command" 2>&1
+    shell_exit=$?
+    echo "Shell exit code: $shell_exit"
     
-    local title="$input_file $cmd1 $cmd2"
+    echo -e "${BLUE}Pipex output:${RESET}"
+    ./pipex $pipex_args 2>&1
+    pipex_exit=$?
+    echo "Pipex exit code: $pipex_exit"
     
-    echo -e "${YELLOW}Running Test $test_num: $title${NC}"
-    
-    if [ -f "$input_file" ]; then
-        < $input_file $cmd1 | $cmd2 > shell_out 2> shell_err
+    if [ $shell_exit -eq $pipex_exit ]; then
+        printf "${GREEN}[OK]${RESET}\n"
     else
-        echo "Input file not found" > shell_out
-        echo "Input file not found" > shell_err
+        printf "${RED}[KO]${RESET}\n"
     fi
-    
-    ./pipex "$input_file" "$cmd1" "$cmd2" "out$test_num" 2> pipex_err
-    
-    if diff shell_out "out$test_num" > /dev/null && diff shell_err pipex_err > /dev/null; then
-        echo -e "${GREEN}=== Test $test_num: $title ===${NC}" >> test_results.txt
-        echo -e "${GREEN}Test $test_num: Passed${NC}"
-    else
-        echo -e "${RED}=== Test $test_num: $title ===${NC}" >> test_results.txt
-        echo -e "${RED}Test $test_num: Failed${NC}"
-    fi
-    
-    echo "Shell output:" >> test_results.txt
-    cat shell_out >> test_results.txt
-    echo "Shell error:" >> test_results.txt
-    cat shell_err >> test_results.txt
-    echo "Pipex output:" >> test_results.txt
-    cat "out$test_num" >> test_results.txt
-    echo "Pipex error:" >> test_results.txt
-    cat pipex_err >> test_results.txt
-    echo "" >> test_results.txt
-    
-    rm -f shell_out shell_err pipex_err "out$test_num"
+    printf "$RED$l2$RESET"
 }
 
-rm -f test_results.txt
-echo "test content" > exist_input
+# Test 1
+run_test "Test 1" \
+    "< non_exist_input cat /dev/random | head -n 5" \
+    "non_exist_input" "cat /dev/random" "head -n 5" "outfile"
 
-echo -e "${YELLOW}Compiling mandatory part...${NC}"
-make
+# Test 2
+run_test "Test 2" \
+    "< in_file catds /dev/random | ls | wc -l" \
+    "in_file" "catds /dev/random" "ls" "wc -l" "outfile"
 
-run_test 1 "non_exist_input" "cat /dev/random" "head -n 5"
-run_test 2 "exist_input" "grep test" "wc -w"
-run_test 3 "exist_input" "ls -l" "wc -l"
-run_test 4 "non_exist_input" "ls" "wc -l"
-run_test 5 "exist_input" "cat" "grep a"
-run_test 6 "exist_input" "cat" "wc -l"
-run_test 7 "non_exist_input" "ls" "wc"
-run_test 8 "exist_input" "/bin/cat" "wc -c"
+# Test 3
+run_test "Test 3" \
+    "< non_exist_input cat /dev/random | wc | ls" \
+    "non_exist_input" "cat /dev/random" "wc" "ls" "outfile"
 
-echo -e "${YELLOW}Cleaning and compiling bonus part...${NC}"
-make fclean
-make bonus
+# Test 4
+run_test "Test 4" \
+    "< in_file csfat | wc -cl | wasdc | grep 0 | sort | cat" \
+    "in_file" "csfat" "wc -cl" "wasdc" "grep 0" "sort" "cat" "outfile"
 
-run_test 9 "non_exist_input" "cat /dev/random" "head -n 5"
-run_test 10 "exist_input" "cat" "grep test" "wc -w"
-run_test 11 "non_exist_input" "cat /dev/random" "wc" "ls"
-run_test 12 "exist_input" "cat" "wc -cl" "grep 0" "sort"
-run_test 13 "non_exist_input" "ls" "grep a" "wc -l" "sort" "uniq"
-run_test 14 "exist_input" "cat" "wc -l" "sort" "uniq"
-run_test 15 "non_exist_input" "ls" "wc" "sort" "cat"
-run_test 16 "exist_input" "/bin/cat" "grep test" "wc -c"
+# Test 5
+run_test "Test 5" \
+    "< non_exist_input sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1" \
+    "non_exist_input" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "outfile"
 
-echo -e "${YELLOW}Cleaning up...${NC}"
-make fclean
-rm -f exist_input
+# Nettoyage
+rm -f in_file outfile
 
-echo -e "${YELLOW}Tests completed. Results are in test_results.txt${NC}"
+# Terminer tous les processus en arrière-plan
+for i in $(ps | grep -v zsh | grep -v TIME | grep -v tester.sh | cut -d" " -f 1); do
+    kill -9 $i &> /dev/null
+done

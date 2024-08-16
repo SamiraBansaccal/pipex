@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+         #
+#    By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 22:05:54 by sabansac          #+#    #+#              #
-#    Updated: 2024/08/13 22:57:25 by sbansacc         ###   ########.fr        #
+#    Updated: 2024/08/16 06:34:37 by sabansac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 CC = gcc
 SRCDIR = src/
 INCLDIR = includes/libft
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 LFLAGS = -I$(INCLDIR) -L$(INCLDIR) -lft
 
 SRC_FILES = main.c \

@@ -6,7 +6,7 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:55 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/15 05:13:55 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/16 07:05:04 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_pipex
 	int		fd_outfile;
 	int		is_here_doc;
 	int		pipes_count;
+	int		*pid;
 	int		**pipes_fds;
 	int		cmds_count;
 	char	**cmds_list;
