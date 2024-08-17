@@ -56,27 +56,27 @@ run_test() {
 # Test 1
 run_test "Test 1" \
     "< non_exist_input cat /dev/random | head -n 5" \
-    "non_exist_input" "cat /dev/random" "head -n 5" "outfile"
+    '"non_exist_input" "cat /dev/random" "head -n 5" "outfile"'
 
 # Test 2
 run_test "Test 2" \
     "< in_file catds /dev/random | ls | wc -l" \
-    "in_file" "catds /dev/random" "ls" "wc -l" "outfile"
+    '"in_file" "catds /dev/random" "ls" "wc -l" "outfile"'
 
 # Test 3
 run_test "Test 3" \
     "< non_exist_input cat /dev/random | wc | ls" \
-    "non_exist_input" "cat /dev/random" "wc" "ls" "outfile"
+    '"non_exist_input" "cat /dev/random" "wc" "ls" "outfile"'
 
 # Test 4
 run_test "Test 4" \
     "< in_file csfat | wc -cl | wasdc | grep 0 | sort | cat" \
-    "in_file" "csfat" "wc -cl" "wasdc" "grep 0" "sort" "cat" "outfile"
+    '"in_file" "csfat" "wc -cl" "wasdc" "grep 0" "sort" "cat" "outfile"'
 
 # Test 5
 run_test "Test 5" \
     "< non_exist_input sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1 | sleep 1" \
-    "non_exist_input" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "outfile"
+    '"non_exist_input" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "sleep 1" "outfile"'
 
 # Nettoyage
 rm -f in_file outfile

@@ -6,7 +6,7 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:50 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/16 11:02:22 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/17 10:46:19 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ char	*check_access(char *cmd, char **paths)
 		if (cmd_path)
 			free(cmd_path);
 	}
-	ft_putstr_fd("pipex: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": command not found\n", 2);
 	return (NULL);
 }
 
@@ -60,19 +57,12 @@ char	*find_cmd_path(char *cmd, char **paths)
 
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
-	if (*cmd == '/' || *cmd == '.')
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		perror(cmd);
-		return (NULL);
-	}
 	cmd_path = NULL;
 	cmd_path = check_access(cmd, paths);
 	return (cmd_path);
 }
 
-void	exec_cmd(t_pipex *pipex, char *cmd, char **envp)
+void	execv_cmd(t_pipex *pipex, char *cmd, char **envp)
 {
 	char	*cmd_path;
 	char	**cmd_args;
@@ -84,8 +74,19 @@ void	exec_cmd(t_pipex *pipex, char *cmd, char **envp)
 	cmd_path = find_cmd_path(cmd_args[0], pipex->paths);
 	if (!cmd_path)
 	{
+		if (ft_strchr(cmd_args[0], '/') || ft_strchr(cmd_args[0], '.'))
+		{
+			perror(cmd_args[0]);
+			free_tab(cmd_args);
+			clean_pipex(pipex);
+			exit(EXIT_FAILURE);
+		}
 		free_tab(cmd_args);
-		return ;
+		ft_putstr_fd("pipex: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		clean_pipex(pipex);
+		exit(EXIT_FAILURE);
 	}
 	execve(cmd_path, cmd_args, envp);
 	free(cmd_path);
@@ -123,7 +124,7 @@ void	child_process(t_pipex *pipex, char **envp, int i)
 		close(pipex->pipes_fds[j][1]);
 		j++;
 	}
-	exec_cmd(pipex, pipex->cmds_list[i], envp);
+	execv_cmd(pipex, pipex->cmds_list[i], envp);
 }
 
 void	init_pipes(t_pipex *pipex, char **av)
