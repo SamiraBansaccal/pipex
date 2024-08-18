@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:55 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/16 07:05:04 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:26:48 by sbansacc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ void	close_pipes(int *pipefd, int n);
 void	pipe_error(void);
 void	child_process(t_pipex *pipex, char **envp, int i);
 void	clean_pipex(t_pipex *pipex);
-
 
 #endif

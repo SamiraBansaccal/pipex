@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:50 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/17 10:46:19 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/18 04:49:39 by sbansacc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*check_access(char *cmd, char **paths)
 	i = 0;
 	tmp = NULL;
 	cmd_path = NULL;
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
 	while (paths[i++])
 	{
 		tmp = ft_strjoin(paths[i], "/");
@@ -51,17 +53,6 @@ void	get_paths(t_pipex *pipex, char **envp)
 	}
 }
 
-char	*find_cmd_path(char *cmd, char **paths)
-{
-	char	*cmd_path;
-
-	if (access(cmd, X_OK) == 0)
-		return (ft_strdup(cmd));
-	cmd_path = NULL;
-	cmd_path = check_access(cmd, paths);
-	return (cmd_path);
-}
-
 void	execv_cmd(t_pipex *pipex, char *cmd, char **envp)
 {
 	char	*cmd_path;
@@ -71,25 +62,31 @@ void	execv_cmd(t_pipex *pipex, char *cmd, char **envp)
 	cmd_args = ft_split(cmd, ' ');
 	if (!cmd_args)
 		error_exit("Split", pipex);
-	cmd_path = find_cmd_path(cmd_args[0], pipex->paths);
+	if (!cmd_args[1] && ft_strncmp(cmd_args[0], "sleep", 5) == 0)
+	{
+		ft_putstr_fd("usage: sleep seconds\n", 2);
+		free_tab(cmd_args);
+		exit(1);
+	}
+	cmd_path = NULL;
+	cmd_path = check_access(cmd_args[0], pipex->paths);
 	if (!cmd_path)
 	{
 		if (ft_strchr(cmd_args[0], '/') || ft_strchr(cmd_args[0], '.'))
 		{
-			perror(cmd_args[0]);
 			free_tab(cmd_args);
-			clean_pipex(pipex);
-			exit(EXIT_FAILURE);
+			error_exit(cmd, pipex);
 		}
-		free_tab(cmd_args);
 		ft_putstr_fd("pipex: ", 2);
 		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd(": Command not found\n", 2);
+		free_tab(cmd_args);
 		clean_pipex(pipex);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	execve(cmd_path, cmd_args, envp);
-	free(cmd_path);
+	if (cmd_path)
+		free(cmd_path);
 	free_tab(cmd_args);
 	error_exit("Execve", pipex);
 }
@@ -124,6 +121,10 @@ void	child_process(t_pipex *pipex, char **envp, int i)
 		close(pipex->pipes_fds[j][1]);
 		j++;
 	}
+	 if (pipex->fd_infile != STDIN_FILENO)
+        close(pipex->fd_infile);
+    if (pipex->fd_outfile != STDOUT_FILENO)
+        close(pipex->fd_outfile);
 	execv_cmd(pipex, pipex->cmds_list[i], envp);
 }
 
@@ -186,7 +187,7 @@ void	pipex_bonus(t_pipex *pipex, char **av, char **envp)
 	i = 0;
 	while (i < pipex->cmds_count)
 	{
-		if (wait(&status) == -1)
+		if (waitpid(-1, &status, 0) == -1)
 			error_exit("Wait", pipex);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 00:30:16 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/13 22:41:20 by sbansacc         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:27:09 by sbansacc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-#include "libft.h"
+# include "libft.h"
 
 char	*get_next_line(int fd);
 int		found_new_line(char *str);

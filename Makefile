@@ -3,51 +3,62 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+         #
+#    By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 22:05:54 by sabansac          #+#    #+#              #
-#    Updated: 2024/08/16 06:34:37 by sabansac         ###   ########.fr        #
+#    Updated: 2024/08/17 20:51:15 by sbansacc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
-CC = gcc
-SRCDIR = src/
-INCLDIR = includes/libft
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
-LFLAGS = -I$(INCLDIR) -L$(INCLDIR) -lft
+.SILENT:
 
-SRC_FILES = main.c \
-	pipex.c \
-	
-BNS_FILES = main_bonus.c \
-	pipex_bonus.c \
-	here_doc_bonus.c \
+NAME := pipex
+CC := gcc
+SRCDIR := src/
+BNSDIR := src/bns/
+LIBFTDIR := includes/libft/
+CFLAGS := -Wall -Wextra -Werror
+INCLFLAGS := -I$(SRCDIR) -I$(LIBFTDIR)
+LDFLAGS := -L$(LIBFTDIR) -lft
 
-SRC = $(addprefix $(SRCDIR), $(SRC_FILES))
-BNS = $(addprefix $(SRCDIR), $(BNS_FILES))
+SRC_FILES := main.c pipex.c
+SRC := $(addprefix $(SRCDIR), $(SRC_FILES))
+OBJ := $(SRC:.c=.o)
 
-OBJ = $(SRC:.c=.o)
-BNS_OBJ = $(BNS:.c=.o)
-ALL_OBJ = $(OBJ) $(BNS_OBJ)
+BNS_FILES := main_bonus.c pipex_bonus.c here_doc_bonus.c
+BNS := $(addprefix $(BNSDIR), $(BNS_FILES))
+BNS_OBJ := $(BNS:.c=.o)
 
-all: libft $(NAME)
+HEADER := $(SRCDIR)pipex.h
+BNS_HEADER := $(BNSDIR)pipex_bonus.h
 
-libft:
-	$(MAKE) -C $(INCLDIR)
-$(SRCDIR)%.o: $(SRC)%.c
-	$(CC) $(CFLAGS) $(LFLAGS) -c $< -o $@
-	
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LFLAGS) -o $@
-bonus: libft $(BNS_OBJ)
-	$(CC) $(CFLAGS) $(BNS_OBJ) $(LFLAGS) -o $(NAME)
+LIBFT := $(LIBFTDIR)libft.a
+
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $@
+
+bonus: $(LIBFT) $(BNS_OBJ)
+	$(CC) $(CFLAGS) $(BNS_OBJ) $(LDFLAGS) -o $(NAME)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
+
+$(SRCDIR)%.o: $(SRCDIR)%.c $(HEADER)
+	$(CC) $(CFLAGS) $(INCLFLAGS) -c $< -o $@
+
+$(BNSDIR)%_bonus.o: $(BNSDIR)%_bonus.c $(BNS_HEADER)
+	$(CC) $(CFLAGS) $(INCLFLAGS) -c $< -o $@
+
 clean:
-	rm -f $(ALL_OBJ)
-	$(MAKE) -C $(INCLDIR) clean
+	$(MAKE) -C $(LIBFTDIR) clean
+	rm -f $(OBJ) $(BNS_OBJ)
+
 fclean: clean
+	$(MAKE) -C $(LIBFTDIR) fclean
 	rm -f $(NAME)
-	$(MAKE) -C $(INCLDIR) fclean
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

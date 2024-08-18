@@ -6,7 +6,7 @@
 /*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:34:14 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/13 22:39:54 by sbansacc         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:27:22 by sbansacc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ char	*free_stash(char **stash)
 	}
 	return (NULL);
 }
-
