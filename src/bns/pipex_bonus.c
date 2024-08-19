@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:50 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/18 04:49:39 by sbansacc         ###   ########.fr       */
+/*   Updated: 2024/08/19 08:23:21 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void	init_pipes(t_pipex *pipex, char **av)
 	while (pipex->cmds_list[pipex->cmds_count])
 		pipex->cmds_count++;
 	pipex->cmds_count--;
+	if (pipex->is_append)
+		pipex->cmds_count--;
 	pipex->pipes_count = pipex->cmds_count - 1;
 	pipex->pipes_fds = NULL;
 	pipex->pipes_fds = malloc(sizeof(int *) * pipex->pipes_count);

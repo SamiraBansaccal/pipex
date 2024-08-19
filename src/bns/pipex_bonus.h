@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:55 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/17 12:26:48 by sbansacc         ###   ########.fr       */
+/*   Updated: 2024/08/19 08:17:03 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_pipex
 	int		fd_infile;
 	int		fd_outfile;
 	int		is_here_doc;
+	int		is_append;
 	int		pipes_count;
 	int		*pid;
 	int		**pipes_fds;

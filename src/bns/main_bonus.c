@@ -6,7 +6,7 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:45 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/16 06:44:31 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/19 08:44:37 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,21 @@ int	is_valid_infile(char **av, int is_here_doc)
 	}
 	if (fd_infile < 0 || access(infile, R_OK) == -1)
 	{
-		perror("Infile");
+		perror(infile);
 		return (-1);
 	}
 	return (fd_infile);
 }
 
-int	is_valid_outfile(char *outfile)
+int	is_valid_outfile(char *outfile, int is_append)
 {
 	int		fd_outfile;
 
-	fd_outfile = open(outfile, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	if (fd_outfile < 0 || access(outfile, W_OK) == -1)
+	if (is_append)
+		fd_outfile = open(outfile, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	else
+		fd_outfile = open(outfile, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (access(outfile, W_OK) == -1 || fd_outfile < 0)
 	{
 		perror("Outfile");
 		exit(EXIT_FAILURE);
@@ -52,6 +55,7 @@ int	is_valid_outfile(char *outfile)
 void	init_files(t_pipex *pipex, int ac, char **av)
 {
 	pipex->is_here_doc = 0;
+	pipex->is_append = 0;
 	if (ac > 1 && ft_strncmp(av[1], "here_doc", 8) == 0)
 		pipex->is_here_doc = 1;
 	if ((!pipex->is_here_doc && ac < 5) || (pipex->is_here_doc && ac < 6))
@@ -60,7 +64,13 @@ void	init_files(t_pipex *pipex, int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 	pipex->fd_infile = is_valid_infile(av, pipex->is_here_doc);
-	pipex->fd_outfile = is_valid_outfile(av[ac - 1]);
+	if (ft_strncmp(av[ac - 2], ">>", 2) == 0)
+	{
+		pipex->is_append = 1;
+		pipex->fd_outfile = is_valid_outfile(av[ac - 1], 1);
+	}
+	else
+		pipex->fd_outfile = is_valid_outfile(av[ac - 1], 0);
 }
 
 int	main(int ac, char **av, char **envp)
