@@ -6,7 +6,7 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:55 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/19 08:17:03 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/20 05:57:32 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_pipex
 	char	**paths;
 }	t_pipex;
 
-void	pipex_bonus(t_pipex *pipex, char **av, char **envp);
+int		pipex_bonus(t_pipex *pipex, char **av, char **envp);
 char	*find_cmd_path(char *cmd, char **envp);
 int		here_doc(char *limiter, char *infile);
 void	error_exit(char *msg, t_pipex *pipex);
@@ -43,5 +43,9 @@ void	close_pipes(int *pipefd, int n);
 void	pipe_error(void);
 void	child_process(t_pipex *pipex, char **envp, int i);
 void	clean_pipex(t_pipex *pipex);
+void	closenfree_pipes(int **pipes_fds, int pipes_count);
+void	execv_cmd(t_pipex *pipex, char *cmd, char **envp);
+void	get_paths(t_pipex *pipex, char **envp);
+void	error_exit(char *msg, t_pipex *pipex);
 
 #endif

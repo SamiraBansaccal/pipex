@@ -6,11 +6,18 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 01:30:45 by sbansacc          #+#    #+#             */
-/*   Updated: 2024/08/19 08:44:37 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/20 05:57:19 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	error_exit(char *msg, t_pipex *pipex)
+{
+	perror(msg);
+	clean_pipex(pipex);
+	exit(EXIT_FAILURE);
+}
 
 int	is_valid_infile(char **av, int is_here_doc)
 {
@@ -76,8 +83,9 @@ void	init_files(t_pipex *pipex, int ac, char **av)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
+	int		status;
 
 	init_files(&pipex, ac, av);
-	pipex_bonus(&pipex, av, envp);
-	return (0);
+	status = pipex_bonus(&pipex, av, envp);
+	return (status);
 }

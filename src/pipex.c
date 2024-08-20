@@ -6,72 +6,11 @@
 /*   By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 22:05:58 by sabansac          #+#    #+#             */
-/*   Updated: 2024/08/16 08:11:41 by sabansac         ###   ########.fr       */
+/*   Updated: 2024/08/20 05:40:04 by sabansac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	*check_access(char *cmd, char **paths)
-{
-	char	*tmp;
-	char	*cmd_path;
-	int		i;
-
-	i = 0;
-	tmp = NULL;
-	cmd_path = NULL;
-	while (paths[i])
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		if (!tmp)
-			return (NULL);
-		cmd_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (!cmd_path)
-			return (NULL);
-		if (access(cmd_path, X_OK) == 0)
-			return (cmd_path);
-		if (cmd_path)
-			free(cmd_path);
-		i++;
-	}
-	ft_putstr_fd("pipex: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	return (NULL);
-}
-
-char	*find_cmd_path(char *cmd, char **envp)
-{
-	char	**paths;
-	char	*cmd_path;
-
-	if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-	if (*cmd == '/' || *cmd == '.')
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		perror(cmd);
-		return (NULL);
-	}
-	paths = NULL;
-	cmd_path = NULL;
-	while (*envp && ft_strncmp(*envp, "PATH=", 5))
-		envp++;
-	if (*envp && !ft_strncmp(*envp, "PATH=", 5))
-	{
-		paths = ft_split(*envp + 5, ':');
-		if (!paths)
-			return (NULL);
-		cmd_path = check_access(cmd, paths);
-		free_tab(paths);
-		return (cmd_path);
-	}
-	perror(cmd);
-	return (cmd_path);
-}
 
 void	exec_cmd(char *cmd, char **envp)
 {
@@ -104,7 +43,8 @@ void	fork_error(void)
 	exit(EXIT_FAILURE);
 }
 
-void	first_child_process(int *pipe_ends, int *fd_in_out, char *cmd1, char **envp)
+void	first_child_process(int *pipe_ends, int *fd_in_out, char *cmd1,
+		char **envp)
 {
 	int		fd_infile;
 	int		fd_outfile;
@@ -121,7 +61,8 @@ void	first_child_process(int *pipe_ends, int *fd_in_out, char *cmd1, char **envp
 	exit(EXIT_FAILURE);
 }
 
-void	last_child_process(int *pipe_ends, int *fd_in_out, char *cmd2, char **envp)
+void	last_child_process(int *pipe_ends, int *fd_in_out, char *cmd2,
+		char **envp)
 {
 	int		fd_infile;
 	int		fd_outfile;
@@ -138,7 +79,7 @@ void	last_child_process(int *pipe_ends, int *fd_in_out, char *cmd2, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-void pipex(int *pipe_ends, int *fd_infile_outfile, char **av, char **envp)
+void	pipex(int *pipe_ends, int *fd_infile_outfile, char **av, char **envp)
 {
 	pid_t	pid1;
 	pid_t	pid2;

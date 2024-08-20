@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbansacc <sbansacc@student.s19.be>         +#+  +:+       +#+         #
+#    By: sabansac <sabansac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 22:05:54 by sabansac          #+#    #+#              #
-#    Updated: 2024/08/17 20:51:15 by sbansacc         ###   ########.fr        #
+#    Updated: 2024/08/20 05:47:35 by sabansac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ CFLAGS := -Wall -Wextra -Werror
 INCLFLAGS := -I$(SRCDIR) -I$(LIBFTDIR)
 LDFLAGS := -L$(LIBFTDIR) -lft
 
-SRC_FILES := main.c pipex.c
+SRC_FILES := main.c pipex.c utils.c
 SRC := $(addprefix $(SRCDIR), $(SRC_FILES))
 OBJ := $(SRC:.c=.o)
 
-BNS_FILES := main_bonus.c pipex_bonus.c here_doc_bonus.c
+BNS_FILES := main_bonus.c pipex_bonus.c here_doc_bonus.c utils_bonus.c
 BNS := $(addprefix $(BNSDIR), $(BNS_FILES))
 BNS_OBJ := $(BNS:.c=.o)
 
